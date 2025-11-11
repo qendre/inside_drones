@@ -39,19 +39,22 @@ source ~/.bashrc
 ```
 
 ### Install MAVROS 2 (ROS ↔ PX4 bridge)
-```sudo apt update
+```
+sudo apt update
 sudo apt install -y ros-humble-mavros ros-humble-mavros-extras
 sudo /opt/ros/humble/lib/mavros/install_geographiclib_datasets.sh
 ```
 
 verify:
-```ros2 pkg list | grep mavros
+```
+ros2 pkg list | grep mavros
 # should print: mavros, mavros_extras
 ```
 
 
 ### Install QGroundCOntrol
-```cd ~
+```
+cd ~
 wget https://d176tv9ibo4jno.cloudfront.net/latest/QGroundControl.AppImage
 chmod +x QGroundControl.AppImage
 ./QGroundControl.AppImage &
@@ -60,11 +63,13 @@ QGroundControl connects automatically over UDP port 14550.
 
 ## Launching the Simulation
 ### Step 1 – Start PX4 SITL (Gazebo X500)
-```cd ~/PX4-Autopilot
+```
+cd ~/PX4-Autopilot
 make px4_sitl gz_x500
 ```
 Verify:
-```INFO  [mavlink] partner IP: 127.0.0.1
+```
+INFO  [mavlink] partner IP: 127.0.0.1
 INFO  [px4] Startup script returned successfully
 pxh>
 ```
@@ -72,24 +77,28 @@ Keep this terminal open.
 
 ### Step 2 – Start MAVROS Bridge
 open a new terminal
-```source /opt/ros/humble/setup.bash
+```
+source /opt/ros/humble/setup.bash
 ros2 launch mavros px4.launch fcu_url:="udp://:14540@localhost:14557"
 ```
 Expected:
-```[INFO] [mavros]: FCU: Heartbeat received
+```
+[INFO] [mavros]: FCU: Heartbeat received
 [INFO] [mavros]: MAVROS connected
 ```
 
 ### Step 3 – Verify Telemetry
 List topics:
-```ros2 topic list | grep mavros
-```
+`ros2 topic list | grep mavros
+`
 Check state and position:
-```ros2 topic echo /mavros/state
+```
+ros2 topic echo /mavros/state
 ros2 topic echo /mavros/local_position/pose
 ```
 Typical:
-```connected: true
+```
+connected: true
 armed: false
 guided: true
 mode: AUTO.LOITER
@@ -97,7 +106,8 @@ mode: AUTO.LOITER
 This confirms MAVROS ↔ PX4 communication.
 
 ### Step 4 - QGroundControl
-```./QGroundControl.AppImage &
+```
+./QGroundControl.AppImage &
 ```
 The virtual drone will appear automatically and stream telemetry.
 
